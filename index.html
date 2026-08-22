@@ -1,0 +1,2081 @@
+<!DOCTYPE html>
+<html lang="de">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width,
+                   initial-scale=1.0,
+                   maximum-scale=1.0,
+                   user-scalable=no">
+
+    <meta name="apple-mobile-web-app-capable"
+          content="yes">
+
+    <meta name="apple-mobile-web-app-status-bar-style"
+          content="default">
+
+    <meta name="apple-mobile-web-app-title"
+          content="Erfassung">
+
+    <title>Erfassung</title>
+
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+
+            margin: 0;
+
+            padding: 20px;
+
+            padding-bottom: 50px;
+
+            background: #f2f2f7;
+
+            color: #1c1c1e;
+
+            font-family:
+                -apple-system,
+                BlinkMacSystemFont,
+                "Segoe UI",
+                Arial,
+                sans-serif;
+        }
+
+
+        .container {
+
+            width: 100%;
+
+            max-width: 700px;
+
+            margin: auto;
+        }
+
+
+        h1 {
+
+            text-align: center;
+
+            font-size: 30px;
+
+            margin: 10px 0 25px;
+        }
+
+
+        h2 {
+
+            margin-top: 0;
+
+            font-size: 22px;
+        }
+
+
+        .box {
+
+            background: white;
+
+            padding: 18px;
+
+            border-radius: 16px;
+
+            margin-bottom: 20px;
+
+            box-shadow:
+                0 2px 8px
+                rgba(0,0,0,0.08);
+        }
+
+
+        label {
+
+            display: block;
+
+            font-weight: 600;
+
+            margin-top: 14px;
+
+            margin-bottom: 6px;
+        }
+
+
+        input,
+        textarea {
+
+            width: 100%;
+
+            padding: 14px;
+
+            font-size: 17px;
+
+            border-radius: 11px;
+
+            border: 1px solid #c7c7cc;
+
+            background: white;
+
+            color: #1c1c1e;
+
+            -webkit-appearance: none;
+        }
+
+
+        input:focus,
+        textarea:focus {
+
+            outline: none;
+
+            border-color: #007aff;
+
+            box-shadow:
+                0 0 0 2px
+                rgba(0,122,255,0.15);
+        }
+
+
+        textarea {
+
+            min-height: 150px;
+
+            resize: vertical;
+
+            line-height: 1.45;
+        }
+
+
+        button {
+
+            width: 100%;
+
+            padding: 15px;
+
+            margin-top: 12px;
+
+            border: none;
+
+            border-radius: 12px;
+
+            font-size: 17px;
+
+            font-weight: 600;
+
+            cursor: pointer;
+        }
+
+
+        button:active {
+
+            opacity: 0.7;
+        }
+
+
+        .blue {
+
+            background: #007aff;
+
+            color: white;
+        }
+
+
+        .green {
+
+            background: #34c759;
+
+            color: white;
+        }
+
+
+        .purple {
+
+            background: #5856d6;
+
+            color: white;
+        }
+
+
+        .red {
+
+            background: #ff3b30;
+
+            color: white;
+        }
+
+
+        .gray {
+
+            background: #8e8e93;
+
+            color: white;
+        }
+
+
+        .entry {
+
+            border-top:
+                1px solid #e5e5ea;
+
+            padding-top: 18px;
+
+            margin-top: 18px;
+        }
+
+
+        .entry:first-child {
+
+            border-top: none;
+
+            padding-top: 0;
+
+            margin-top: 0;
+        }
+
+
+        .entry-title {
+
+            font-size: 18px;
+
+            font-weight: 700;
+
+            margin-bottom: 6px;
+        }
+
+
+        .timestamp {
+
+            color: #636366;
+
+            font-size: 15px;
+
+            margin-bottom: 8px;
+        }
+
+
+        .count {
+
+            color: #636366;
+
+            font-size: 15px;
+
+            margin-bottom: 15px;
+        }
+
+
+        .status {
+
+            text-align: center;
+
+            font-size: 14px;
+
+            color: #636366;
+
+            margin-top: 12px;
+        }
+
+
+        .empty {
+
+            text-align: center;
+
+            color: #8e8e93;
+
+            padding: 15px;
+        }
+
+
+        /* LOGIN */
+
+        #loginScreen {
+
+            position: fixed;
+
+            inset: 0;
+
+            z-index: 10000;
+
+            background: #f2f2f7;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            padding: 20px;
+        }
+
+
+        .loginBox {
+
+            width: 100%;
+
+            max-width: 430px;
+
+            background: white;
+
+            padding: 25px;
+
+            border-radius: 20px;
+
+            box-shadow:
+                0 5px 25px
+                rgba(0,0,0,0.12);
+        }
+
+
+        .lockIcon {
+
+            text-align: center;
+
+            font-size: 50px;
+
+            margin-bottom: 10px;
+        }
+
+
+        .loginBox h1 {
+
+            margin: 0 0 15px;
+
+            font-size: 27px;
+        }
+
+
+        .loginText {
+
+            text-align: center;
+
+            color: #636366;
+
+            line-height: 1.5;
+
+            margin-bottom: 20px;
+        }
+
+
+        .error {
+
+            color: #ff3b30;
+
+            text-align: center;
+
+            min-height: 22px;
+
+            margin-top: 10px;
+        }
+
+
+        .security {
+
+            margin-top: 18px;
+
+            padding: 12px;
+
+            background: #f2f2f7;
+
+            border-radius: 12px;
+
+            font-size: 13px;
+
+            color: #636366;
+
+            line-height: 1.45;
+        }
+
+
+        #app {
+
+            display: none;
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<!-- ==================================================
+     LOGIN
+================================================== -->
+
+<div id="loginScreen">
+
+    <div class="loginBox">
+
+        <div class="lockIcon">
+            🔐
+        </div>
+
+
+        <h1 id="loginTitle">
+            Passwort festlegen
+        </h1>
+
+
+        <div
+            id="loginText"
+            class="loginText"
+        >
+            Erstelle ein Passwort für
+            deine verschlüsselten Daten.
+        </div>
+
+
+        <label for="password">
+            Passwort
+        </label>
+
+        <input
+            id="password"
+            type="password"
+            autocomplete="new-password"
+            placeholder="Passwort"
+        >
+
+
+        <div id="passwordRepeatArea">
+
+            <label for="passwordRepeat">
+                Passwort wiederholen
+            </label>
+
+            <input
+                id="passwordRepeat"
+                type="password"
+                autocomplete="new-password"
+                placeholder="Passwort wiederholen"
+            >
+
+        </div>
+
+
+        <button
+            id="loginButton"
+            class="blue"
+            onclick="login()"
+        >
+            Passwort festlegen
+        </button>
+
+
+        <button
+            id="deleteLoginButton"
+            class="red"
+            onclick="deleteEverything()"
+            style="display:none;"
+        >
+            Gespeicherte Daten löschen
+        </button>
+
+
+        <div
+            id="loginError"
+            class="error"
+        ></div>
+
+
+        <div class="security">
+
+            <strong>Wichtig:</strong><br>
+
+            Dein Passwort wird nicht gespeichert.
+            Wenn du dein Passwort vergisst,
+            können die verschlüsselten Daten
+            nicht wiederhergestellt werden.
+
+        </div>
+
+    </div>
+
+</div>
+
+
+
+<!-- ==================================================
+     APP
+================================================== -->
+
+<div id="app">
+
+    <div class="container">
+
+
+        <h1>
+            Erfassung
+        </h1>
+
+
+        <!-- PERSON -->
+
+        <div class="box">
+
+            <h2>
+                Person
+            </h2>
+
+
+            <label for="name">
+                Name
+            </label>
+
+            <input
+                id="name"
+                type="text"
+                placeholder="Name"
+                autocomplete="family-name"
+            >
+
+
+            <label for="firstName">
+                Vorname
+            </label>
+
+            <input
+                id="firstName"
+                type="text"
+                placeholder="Vorname"
+                autocomplete="given-name"
+            >
+
+
+            <label for="birthDate">
+                Geburtsdatum
+            </label>
+
+            <input
+                id="birthDate"
+                type="date"
+            >
+
+        </div>
+
+
+
+        <!-- EINTRÄGE -->
+
+        <div class="box">
+
+            <h2>
+                Einträge
+            </h2>
+
+
+            <div
+                id="entryCount"
+                class="count"
+            >
+                Keine Einträge
+            </div>
+
+
+            <div id="entries">
+
+                <div class="empty">
+                    Noch keine Einträge vorhanden.
+                </div>
+
+            </div>
+
+
+            <button
+                class="blue"
+                onclick="newEntry()"
+            >
+                + Neuer Eintrag
+            </button>
+
+        </div>
+
+
+
+        <!-- AKTIONEN -->
+
+        <div class="box">
+
+
+            <button
+                class="green"
+                onclick="sendEmail()"
+            >
+                ✉️ E-Mail versenden
+            </button>
+
+
+            <button
+                class="purple"
+                onclick="lockApp()"
+            >
+                🔒 App sperren
+            </button>
+
+            <button
+                class="red"
+                onclick="deleteEverything()"
+            >
+                🗑️ Alle Daten löschen
+            </button>
+
+
+            <div
+                id="status"
+                class="status"
+            >
+                🔒 Verschlüsselt gespeichert
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+
+<script>
+
+/* =====================================================
+   KONFIGURATION
+===================================================== */
+
+const STORAGE_KEY =
+    "ERFASSUNG_APP_V3";
+
+
+const PBKDF2_ITERATIONS =
+    600000;
+
+
+const AUTO_LOCK_MS =
+    5 * 60 * 1000;
+
+
+/* =====================================================
+   GLOBALE VARIABLEN
+===================================================== */
+
+let encryptionKey = null;
+
+let currentSalt = null;
+
+let appData = null;
+
+let isNewInstallation = false;
+
+let lockTimer = null;
+
+
+/* =====================================================
+   HILFSFUNKTIONEN
+===================================================== */
+
+function bytesToBase64(bytes) {
+
+    let binary = "";
+
+    for (
+        let i = 0;
+        i < bytes.length;
+        i++
+    ) {
+
+        binary +=
+            String.fromCharCode(
+                bytes[i]
+            );
+
+    }
+
+    return btoa(binary);
+}
+
+
+function base64ToBytes(base64) {
+
+    const binary =
+        atob(base64);
+
+    const bytes =
+        new Uint8Array(
+            binary.length
+        );
+
+    for (
+        let i = 0;
+        i < binary.length;
+        i++
+    ) {
+
+        bytes[i] =
+            binary.charCodeAt(i);
+
+    }
+
+    return bytes;
+}
+
+
+/* =====================================================
+   PASSWORT → AES-256-GCM SCHLÜSSEL
+===================================================== */
+
+async function deriveKey(
+    password,
+    salt
+) {
+
+    const encoder =
+        new TextEncoder();
+
+
+    const passwordMaterial =
+        await crypto.subtle.importKey(
+
+            "raw",
+
+            encoder.encode(
+                password
+            ),
+
+            "PBKDF2",
+
+            false,
+
+            [
+                "deriveKey"
+            ]
+
+        );
+
+
+    return await crypto.subtle.deriveKey(
+
+        {
+
+            name: "PBKDF2",
+
+            salt: salt,
+
+            iterations:
+                PBKDF2_ITERATIONS,
+
+            hash: "SHA-256"
+
+        },
+
+        passwordMaterial,
+
+        {
+
+            name: "AES-GCM",
+
+            length: 256
+
+        },
+
+        false,
+
+        [
+            "encrypt",
+            "decrypt"
+        ]
+
+    );
+
+}
+
+
+/* =====================================================
+   VERSCHLÜSSELN
+===================================================== */
+
+async function encryptData() {
+
+    if (!encryptionKey) {
+
+        throw new Error(
+            "Kein Schlüssel vorhanden."
+        );
+
+    }
+
+
+    const encoder =
+        new TextEncoder();
+
+
+    const plainText =
+        JSON.stringify(
+            appData
+        );
+
+
+    /*
+       Für jeden Speichervorgang
+       einen neuen IV erzeugen.
+    */
+
+    const iv =
+        crypto.getRandomValues(
+            new Uint8Array(12)
+        );
+
+
+    const encrypted =
+        await crypto.subtle.encrypt(
+
+            {
+                name: "AES-GCM",
+
+                iv: iv
+            },
+
+            encryptionKey,
+
+            encoder.encode(
+                plainText
+            )
+
+        );
+
+
+    const record = {
+
+        version: 3,
+
+        salt:
+            bytesToBase64(
+                currentSalt
+            ),
+
+        iv:
+            bytesToBase64(
+                iv
+            ),
+
+        data:
+            bytesToBase64(
+                new Uint8Array(
+                    encrypted
+                )
+            )
+
+    };
+
+
+    localStorage.setItem(
+
+        STORAGE_KEY,
+
+        JSON.stringify(
+            record
+        )
+
+    );
+
+}
+
+
+/* =====================================================
+   ENTSCHLÜSSELN
+===================================================== */
+
+async function decryptData(
+    password
+) {
+
+    const raw =
+        localStorage.getItem(
+            STORAGE_KEY
+        );
+
+
+    if (!raw) {
+
+        return false;
+
+    }
+
+
+    try {
+
+        const record =
+            JSON.parse(raw);
+
+
+        /*
+           Salt aus dem gespeicherten
+           Datensatz lesen.
+        */
+
+        const salt =
+            base64ToBytes(
+                record.salt
+            );
+
+
+        /*
+           IV aus dem Datensatz lesen.
+        */
+
+        const iv =
+            base64ToBytes(
+                record.iv
+            );
+
+
+        /*
+           Verschlüsselte Daten lesen.
+        */
+
+        const encrypted =
+            base64ToBytes(
+                record.data
+            );
+
+
+        /*
+           Aus Passwort + Salt
+           denselben Schlüssel erzeugen.
+        */
+
+        const key =
+            await deriveKey(
+                password,
+                salt
+            );
+
+
+        /*
+           Entschlüsseln.
+        */
+
+        const decrypted =
+            await crypto.subtle.decrypt(
+
+                {
+                    name: "AES-GCM",
+
+                    iv: iv
+                },
+
+                key,
+
+                encrypted
+
+            );
+
+
+        const decoder =
+            new TextDecoder();
+
+
+        const json =
+            decoder.decode(
+                decrypted
+            );
+
+
+        const parsed =
+            JSON.parse(
+                json
+            );
+
+
+        /*
+           WICHTIG:
+           Erst jetzt Schlüssel übernehmen.
+        */
+
+        encryptionKey =
+            key;
+
+        currentSalt =
+            salt;
+
+        appData =
+            parsed;
+
+
+        return true;
+
+    }
+
+    catch (error) {
+
+        console.error(
+            "Entschlüsselung fehlgeschlagen:",
+            error
+        );
+
+        return false;
+
+    }
+
+}
+
+
+/* =====================================================
+   NEUE INSTALLATION
+===================================================== */
+
+async function createNewInstallation(
+    password
+) {
+
+    currentSalt =
+        crypto.getRandomValues(
+            new Uint8Array(16)
+        );
+
+
+    encryptionKey =
+        await deriveKey(
+            password,
+            currentSalt
+        );
+
+
+    appData = {
+
+        name: "",
+
+        firstName: "",
+
+        birthDate: "",
+
+        entries: []
+
+    };
+
+
+    await encryptData();
+
+}
+
+
+/* =====================================================
+   LOGIN
+===================================================== */
+
+async function login() {
+
+    const password =
+        document.getElementById(
+            "password"
+        ).value;
+
+
+    const passwordRepeat =
+        document.getElementById(
+            "passwordRepeat"
+        ).value;
+
+
+    const error =
+        document.getElementById(
+            "loginError"
+        );
+
+
+    error.textContent = "";
+
+
+    if (!password) {
+
+        error.textContent =
+            "Bitte Passwort eingeben.";
+
+        return;
+
+    }
+
+
+    /*
+       NEUE INSTALLATION
+    */
+
+    if (isNewInstallation) {
+
+        if (
+            password.length < 8
+        ) {
+
+            error.textContent =
+                "Das Passwort muss mindestens 8 Zeichen haben.";
+
+            return;
+
+        }
+
+
+        if (
+            password !== passwordRepeat
+        ) {
+
+            error.textContent =
+                "Die Passwörter stimmen nicht überein.";
+
+            return;
+
+        }
+
+
+        try {
+
+            await createNewInstallation(
+                password
+            );
+
+
+            openApp();
+
+        }
+
+        catch (e) {
+
+            console.error(e);
+
+            error.textContent =
+                "Fehler beim Erstellen der verschlüsselten Daten.";
+
+        }
+
+
+        return;
+
+    }
+
+
+    /*
+       BESTEHENDE INSTALLATION
+    */
+
+    const success =
+        await decryptData(
+            password
+        );
+
+
+    if (!success) {
+
+        error.textContent =
+            "Passwort ist falsch oder die gespeicherten Daten sind beschädigt.";
+
+        return;
+
+    }
+
+
+    openApp();
+
+}
+
+
+/* =====================================================
+   APP ÖFFNEN
+===================================================== */
+
+function openApp() {
+
+    document.getElementById(
+        "loginScreen"
+    ).style.display =
+        "none";
+
+
+    document.getElementById(
+        "app"
+    ).style.display =
+        "block";
+
+
+    document.getElementById(
+        "password"
+    ).value =
+        "";
+
+
+    document.getElementById(
+        "passwordRepeat"
+    ).value =
+        "";
+
+
+    render();
+
+
+    startLockTimer();
+
+    updateStatus(
+        "🔒 Daten sind verschlüsselt gespeichert."
+    );
+
+}
+
+
+/* =====================================================
+   SPEICHERN
+===================================================== */
+
+let saveTimer = null;
+
+
+function save() {
+
+    if (!encryptionKey) {
+
+        return;
+
+    }
+
+
+    /*
+       Nicht bei jedem einzelnen
+       Tastendruck sofort verschlüsseln.
+       Stattdessen 300 ms warten.
+    */
+
+    clearTimeout(
+        saveTimer
+    );
+
+
+    saveTimer =
+        setTimeout(
+            async function() {
+
+                try {
+
+                    await encryptData();
+
+                    updateStatus(
+                        "✓ Verschlüsselt gespeichert."
+                    );
+
+                }
+
+                catch (error) {
+
+                    console.error(
+                        error
+                    );
+
+                    updateStatus(
+                        "⚠️ Fehler beim Speichern."
+                    );
+
+                }
+
+            },
+            300
+        );
+
+}
+
+
+/* =====================================================
+   STATUS
+===================================================== */
+
+function updateStatus(
+    text
+) {
+
+    document.getElementById(
+        "status"
+    ).textContent =
+        text;
+
+}
+
+
+/* =====================================================
+   PERSONENDATEN
+===================================================== */
+
+document
+    .getElementById("name")
+    .addEventListener(
+        "input",
+        function() {
+
+            if (!appData) {
+                return;
+            }
+
+
+            appData.name =
+                this.value;
+
+
+            save();
+
+        }
+    );
+
+
+document
+    .getElementById("firstName")
+    .addEventListener(
+        "input",
+        function() {
+
+            if (!appData) {
+                return;
+            }
+
+
+            appData.firstName =
+                this.value;
+
+
+            save();
+
+        }
+    );
+
+
+document
+    .getElementById("birthDate")
+    .addEventListener(
+        "change",
+        function() {
+
+            if (!appData) {
+                return;
+            }
+
+
+            appData.birthDate =
+                this.value;
+
+
+            save();
+
+        }
+    );
+
+
+/* =====================================================
+   NEUER EINTRAG
+===================================================== */
+
+async function newEntry() {
+
+    if (!appData) {
+
+        return;
+
+    }
+
+
+    const now =
+        new Date();
+
+
+    const timestamp =
+        now.toLocaleString(
+            "de-CH",
+            {
+                dateStyle: "short",
+                timeStyle: "medium"
+            }
+        );
+
+
+    appData.entries.push({
+
+        timestamp:
+            timestamp,
+
+        text: ""
+
+    });
+
+
+    await encryptData();
+
+
+    render();
+
+
+    setTimeout(
+        function() {
+
+            const fields =
+                document.querySelectorAll(
+                    ".entry textarea"
+                );
+
+
+            if (
+                fields.length > 0
+            ) {
+
+                const last =
+                    fields[
+                        fields.length - 1
+                    ];
+
+
+                last.focus();
+
+
+                last.scrollIntoView({
+                    behavior: "smooth",
+                    block: "center"
+                });
+
+            }
+
+        },
+        100
+    );
+
+}
+
+
+/* =====================================================
+   ANZEIGE
+===================================================== */
+
+function render() {
+
+    if (!appData) {
+
+        return;
+
+    }
+
+
+    document.getElementById(
+        "name"
+    ).value =
+        appData.name || "";
+
+
+    document.getElementById(
+        "firstName"
+    ).value =
+        appData.firstName || "";
+
+
+    document.getElementById(
+        "birthDate"
+    ).value =
+        appData.birthDate || "";
+
+
+    const container =
+        document.getElementById(
+            "entries"
+        );
+
+
+    const count =
+        document.getElementById(
+            "entryCount"
+        );
+
+
+    container.innerHTML =
+        "";
+
+
+    if (
+        appData.entries.length === 0
+    ) {
+
+        count.textContent =
+            "Keine Einträge";
+
+
+        container.innerHTML =
+            '<div class="empty">' +
+            'Noch keine Einträge vorhanden.' +
+            '</div>';
+
+        return;
+
+    }
+
+
+    count.textContent =
+        appData.entries.length +
+        (
+            appData.entries.length === 1
+                ? " Eintrag"
+                : " Einträge"
+        );
+
+
+    appData.entries.forEach(
+        function(entry, index) {
+
+            const div =
+                document.createElement(
+                    "div"
+                );
+
+
+            div.className =
+                "entry";
+
+
+            const title =
+                document.createElement(
+                    "div"
+                );
+
+
+            title.className =
+                "entry-title";
+
+
+            title.textContent =
+                "Eintrag " +
+                (index + 1);
+
+
+            const time =
+                document.createElement(
+                    "div"
+                );
+
+
+            time.className =
+                "timestamp";
+
+
+            time.textContent =
+                "Zeitstempel: " +
+                entry.timestamp;
+
+
+            const textarea =
+                document.createElement(
+                    "textarea"
+                );
+
+
+            textarea.placeholder =
+                "Text eingeben...";
+
+
+            textarea.value =
+                entry.text || "";
+
+
+            textarea.addEventListener(
+                "input",
+                function() {
+
+                    appData
+                        .entries[index]
+                        .text =
+                        this.value;
+
+
+                    save();
+
+                }
+            );
+
+
+            div.appendChild(
+                title
+            );
+
+
+            div.appendChild(
+                time
+            );
+
+
+            div.appendChild(
+                textarea
+            );
+
+
+            container.appendChild(
+                div
+            );
+
+        }
+    );
+
+}
+
+
+/* =====================================================
+   E-MAIL
+===================================================== */
+
+function sendEmail() {
+
+    if (!appData) {
+
+        return;
+
+    }
+
+
+    let body = "";
+
+
+    body +=
+        "PERSONENDATEN\n";
+
+    body +=
+        "====================\n\n";
+
+
+    body +=
+        "Name: " +
+        (appData.name || "") +
+        "\n";
+
+
+    body +=
+        "Vorname: " +
+        (appData.firstName || "") +
+        "\n";
+
+
+    body +=
+        "Geburtsdatum: " +
+        (appData.birthDate || "") +
+        "\n\n";
+
+
+    body +=
+        "EINTRÄGE\n";
+
+    body +=
+        "====================\n\n";
+
+
+    appData.entries.forEach(
+        function(entry, index) {
+
+            body +=
+                "Eintrag " +
+                (index + 1) +
+                "\n";
+
+
+            body +=
+                "Zeitstempel: " +
+                entry.timestamp +
+                "\n\n";
+
+
+            body +=
+                entry.text +
+                "\n\n";
+
+
+            body +=
+                "--------------------\n\n";
+
+        }
+    );
+
+
+    const subject =
+        "Erfassung " +
+        (appData.firstName || "") +
+        " " +
+        (appData.name || "");
+
+
+    const mailto =
+        "mailto:?subject=" +
+        encodeURIComponent(
+            subject
+        ) +
+        "&body=" +
+        encodeURIComponent(
+            body
+        );
+
+
+    window.location.href =
+        mailto;
+
+}
+
+
+/* =====================================================
+   APP SPERREN
+===================================================== */
+
+function lockApp() {
+
+    /*
+       Noch ausstehende Speicherung
+       abwarten.
+    */
+
+    clearTimeout(
+        saveTimer
+    );
+
+
+    if (
+        encryptionKey &&
+        appData
+    ) {
+
+        encryptData()
+            .then(
+                function() {
+
+                    actuallyLock();
+
+                }
+            )
+            .catch(
+                function(error) {
+
+                    console.error(
+                        error
+                    );
+
+                    actuallyLock();
+
+                }
+            );
+
+    }
+
+    else {
+
+        actuallyLock();
+
+    }
+
+}
+
+
+function actuallyLock() {
+
+    /*
+       Schlüssel aus dem RAM löschen.
+    */
+
+    encryptionKey =
+        null;
+
+
+    /*
+       Auch die Daten aus dem
+       sichtbaren Arbeitsspeicher entfernen.
+    */
+
+    appData =
+        null;
+
+
+    document.getElementById(
+        "app"
+    ).style.display =
+        "none";
+
+
+    document.getElementById(
+        "loginScreen"
+    ).style.display =
+        "flex";
+
+
+    document.getElementById(
+        "loginTitle"
+    ).textContent =
+        "🔐 App gesperrt";
+
+
+    document.getElementById(
+        "loginText"
+    ).textContent =
+        "Gib dein Passwort ein, " +
+        "um die verschlüsselten Daten zu öffnen.";
+
+
+    document.getElementById(
+        "passwordRepeatArea"
+    ).style.display =
+        "none";
+
+
+    document.getElementById(
+        "loginButton"
+    ).textContent =
+        "Entsperren";
+
+
+    document.getElementById(
+        "loginError"
+    ).textContent =
+        "";
+
+
+    document.getElementById(
+        "password"
+    ).value =
+        "";
+
+
+    stopLockTimer();
+
+
+    setTimeout(
+        function() {
+
+            document
+                .getElementById(
+                    "password"
+                )
+                .focus();
+
+        },
+        100
+    );
+
+}
+
+
+/* =====================================================
+   AUTOMATISCHE SPERRE
+===================================================== */
+
+function startLockTimer() {
+
+    stopLockTimer();
+
+
+    lockTimer =
+        setTimeout(
+            function() {
+
+                lockApp();
+
+            },
+            AUTO_LOCK_MS
+        );
+
+}
+
+
+function stopLockTimer() {
+
+    if (lockTimer) {
+
+        clearTimeout(
+            lockTimer
+        );
+
+        lockTimer =
+            null;
+
+    }
+
+}
+
+
+function resetLockTimer() {
+
+    if (!encryptionKey) {
+
+        return;
+
+    }
+
+
+    startLockTimer();
+
+}
+
+
+document.addEventListener(
+    "touchstart",
+    resetLockTimer
+);
+
+
+document.addEventListener(
+    "click",
+    resetLockTimer
+);
+
+
+document.addEventListener(
+    "input",
+    resetLockTimer
+);
+
+
+/* =====================================================
+   ALLES LÖSCHEN
+===================================================== */
+
+async function deleteEverything() {
+
+    const answer =
+        confirm(
+
+            "ACHTUNG!\n\n" +
+
+            "Alle verschlüsselten Daten " +
+            "werden endgültig gelöscht.\n\n" +
+
+            "Diese Aktion kann nicht " +
+            "rückgängig gemacht werden.\n\n" +
+
+            "Möchtest du wirklich fortfahren?"
+
+        );
+
+
+    if (!answer) {
+
+        return;
+
+    }
+
+
+    clearTimeout(
+        saveTimer
+    );
+
+
+    localStorage.removeItem(
+        STORAGE_KEY
+    );
+
+
+    encryptionKey =
+        null;
+
+
+    currentSalt =
+        null;
+
+
+    appData =
+        null;
+
+
+    location.reload();
+
+}
+
+
+/* =====================================================
+   START
+===================================================== */
+
+function start() {
+
+    const existing =
+        localStorage.getItem(
+            STORAGE_KEY
+        );
+
+
+    if (existing) {
+
+        /*
+           Bestehende Installation
+        */
+
+        isNewInstallation =
+            false;
+
+
+        document.getElementById(
+            "loginTitle"
+        ).textContent =
+            "🔐 App entsperren";
+
+
+        document.getElementById(
+            "loginText"
+        ).textContent =
+            "Gib dein Passwort ein, " +
+            "um die verschlüsselten Daten zu öffnen.";
+
+
+        document.getElementById(
+            "passwordRepeatArea"
+        ).style.display =
+            "none";
+
+
+        document.getElementById(
+            "loginButton"
+        ).textContent =
+            "Entsperren";
+
+
+        document.getElementById(
+            "deleteLoginButton"
+        ).style.display =
+            "block";
+
+    }
+
+    else {
+
+        /*
+           Neue Installation
+        */
+
+        isNewInstallation =
+            true;
+
+
+        document.getElementById(
+            "loginTitle"
+        ).textContent =
+            "🔐 Passwort festlegen";
+
+
+        document.getElementById(
+            "loginText"
+        ).textContent =
+            "Erstelle ein Passwort für " +
+            "deine verschlüsselten Daten.";
+
+
+        document.getElementById(
+            "passwordRepeatArea"
+        ).style.display =
+            "block";
+
+
+        document.getElementById(
+            "loginButton"
+        ).textContent =
+            "Passwort festlegen";
+
+    }
+
+}
+
+
+start();
+
+</script>
+
+</body>
+
+</html>
