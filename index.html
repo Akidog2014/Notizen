@@ -11,6 +11,9 @@
                    maximum-scale=1.0,
                    user-scalable=no">
 
+    <!-- PWA -->
+    <meta name="theme-color" content="#007aff">
+
     <meta name="apple-mobile-web-app-capable"
           content="yes">
 
@@ -20,6 +23,12 @@
     <meta name="apple-mobile-web-app-title"
           content="Erfassung">
 
+    <link rel="manifest"
+          href="manifest.json">
+
+    <link rel="apple-touch-icon"
+          href="icons/icon-192.png">
+
     <title>Erfassung</title>
 
 
@@ -28,6 +37,7 @@
         * {
             box-sizing: border-box;
         }
+
 
         body {
 
@@ -192,14 +202,6 @@
         }
 
 
-        .purple {
-
-            background: #5856d6;
-
-            color: white;
-        }
-
-
         .red {
 
             background: #ff3b30;
@@ -288,220 +290,12 @@
             padding: 15px;
         }
 
-
-        /* LOGIN */
-
-        #loginScreen {
-
-            position: fixed;
-
-            inset: 0;
-
-            z-index: 10000;
-
-            background: #f2f2f7;
-
-            display: flex;
-
-            align-items: center;
-
-            justify-content: center;
-
-            padding: 20px;
-        }
-
-
-        .loginBox {
-
-            width: 100%;
-
-            max-width: 430px;
-
-            background: white;
-
-            padding: 25px;
-
-            border-radius: 20px;
-
-            box-shadow:
-                0 5px 25px
-                rgba(0,0,0,0.12);
-        }
-
-
-        .lockIcon {
-
-            text-align: center;
-
-            font-size: 50px;
-
-            margin-bottom: 10px;
-        }
-
-
-        .loginBox h1 {
-
-            margin: 0 0 15px;
-
-            font-size: 27px;
-        }
-
-
-        .loginText {
-
-            text-align: center;
-
-            color: #636366;
-
-            line-height: 1.5;
-
-            margin-bottom: 20px;
-        }
-
-
-        .error {
-
-            color: #ff3b30;
-
-            text-align: center;
-
-            min-height: 22px;
-
-            margin-top: 10px;
-        }
-
-
-        .security {
-
-            margin-top: 18px;
-
-            padding: 12px;
-
-            background: #f2f2f7;
-
-            border-radius: 12px;
-
-            font-size: 13px;
-
-            color: #636366;
-
-            line-height: 1.45;
-        }
-
-
-        #app {
-
-            display: none;
-        }
-
     </style>
 
 </head>
 
 
 <body>
-
-
-<!-- ==================================================
-     LOGIN
-================================================== -->
-
-<div id="loginScreen">
-
-    <div class="loginBox">
-
-        <div class="lockIcon">
-            🔐
-        </div>
-
-
-        <h1 id="loginTitle">
-            Passwort festlegen
-        </h1>
-
-
-        <div
-            id="loginText"
-            class="loginText"
-        >
-            Erstelle ein Passwort für
-            deine verschlüsselten Daten.
-        </div>
-
-
-        <label for="password">
-            Passwort
-        </label>
-
-        <input
-            id="password"
-            type="password"
-            autocomplete="new-password"
-            placeholder="Passwort"
-        >
-
-
-        <div id="passwordRepeatArea">
-
-            <label for="passwordRepeat">
-                Passwort wiederholen
-            </label>
-
-            <input
-                id="passwordRepeat"
-                type="password"
-                autocomplete="new-password"
-                placeholder="Passwort wiederholen"
-            >
-
-        </div>
-
-
-        <button
-            id="loginButton"
-            class="blue"
-            onclick="login()"
-        >
-            Passwort festlegen
-        </button>
-
-
-        <button
-            id="deleteLoginButton"
-            class="red"
-            onclick="deleteEverything()"
-            style="display:none;"
-        >
-            Gespeicherte Daten löschen
-        </button>
-
-
-        <div
-            id="loginError"
-            class="error"
-        ></div>
-
-
-        <div class="security">
-
-            <strong>Wichtig:</strong><br>
-
-            Dein Passwort wird nicht gespeichert.
-            Wenn du dein Passwort vergisst,
-            können die verschlüsselten Daten
-            nicht wiederhergestellt werden.
-
-        </div>
-
-    </div>
-
-</div>
-
-
-
-<!-- ==================================================
-     APP
-================================================== -->
 
 <div id="app">
 
@@ -558,7 +352,6 @@
         </div>
 
 
-
         <!-- EINTRÄGE -->
 
         <div class="box">
@@ -595,11 +388,9 @@
         </div>
 
 
-
         <!-- AKTIONEN -->
 
         <div class="box">
-
 
             <button
                 class="green"
@@ -608,13 +399,6 @@
                 ✉️ E-Mail versenden
             </button>
 
-
-            <button
-                class="purple"
-                onclick="lockApp()"
-            >
-                🔒 App sperren
-            </button>
 
             <button
                 class="red"
@@ -628,7 +412,7 @@
                 id="status"
                 class="status"
             >
-                🔒 Verschlüsselt gespeichert
+                💾 Lokal gespeichert
             </div>
 
         </div>
@@ -638,7 +422,6 @@
 </div>
 
 
-
 <script>
 
 /* =====================================================
@@ -646,404 +429,25 @@
 ===================================================== */
 
 const STORAGE_KEY =
-    "ERFASSUNG_APP_V3";
-
-
-const PBKDF2_ITERATIONS =
-    600000;
-
-
-const AUTO_LOCK_MS =
-    5 * 60 * 1000;
+    "ERFASSUNG_APP_V4";
 
 
 /* =====================================================
-   GLOBALE VARIABLEN
+   GLOBALE DATEN
 ===================================================== */
-
-let encryptionKey = null;
-
-let currentSalt = null;
 
 let appData = null;
 
-let isNewInstallation = false;
-
-let lockTimer = null;
+let saveTimer = null;
 
 
 /* =====================================================
-   HILFSFUNKTIONEN
+   STANDARD-DATEN
 ===================================================== */
 
-function bytesToBase64(bytes) {
+function createEmptyData() {
 
-    let binary = "";
-
-    for (
-        let i = 0;
-        i < bytes.length;
-        i++
-    ) {
-
-        binary +=
-            String.fromCharCode(
-                bytes[i]
-            );
-
-    }
-
-    return btoa(binary);
-}
-
-
-function base64ToBytes(base64) {
-
-    const binary =
-        atob(base64);
-
-    const bytes =
-        new Uint8Array(
-            binary.length
-        );
-
-    for (
-        let i = 0;
-        i < binary.length;
-        i++
-    ) {
-
-        bytes[i] =
-            binary.charCodeAt(i);
-
-    }
-
-    return bytes;
-}
-
-
-/* =====================================================
-   PASSWORT → AES-256-GCM SCHLÜSSEL
-===================================================== */
-
-async function deriveKey(
-    password,
-    salt
-) {
-
-    const encoder =
-        new TextEncoder();
-
-
-    const passwordMaterial =
-        await crypto.subtle.importKey(
-
-            "raw",
-
-            encoder.encode(
-                password
-            ),
-
-            "PBKDF2",
-
-            false,
-
-            [
-                "deriveKey"
-            ]
-
-        );
-
-
-    return await crypto.subtle.deriveKey(
-
-        {
-
-            name: "PBKDF2",
-
-            salt: salt,
-
-            iterations:
-                PBKDF2_ITERATIONS,
-
-            hash: "SHA-256"
-
-        },
-
-        passwordMaterial,
-
-        {
-
-            name: "AES-GCM",
-
-            length: 256
-
-        },
-
-        false,
-
-        [
-            "encrypt",
-            "decrypt"
-        ]
-
-    );
-
-}
-
-
-/* =====================================================
-   VERSCHLÜSSELN
-===================================================== */
-
-async function encryptData() {
-
-    if (!encryptionKey) {
-
-        throw new Error(
-            "Kein Schlüssel vorhanden."
-        );
-
-    }
-
-
-    const encoder =
-        new TextEncoder();
-
-
-    const plainText =
-        JSON.stringify(
-            appData
-        );
-
-
-    /*
-       Für jeden Speichervorgang
-       einen neuen IV erzeugen.
-    */
-
-    const iv =
-        crypto.getRandomValues(
-            new Uint8Array(12)
-        );
-
-
-    const encrypted =
-        await crypto.subtle.encrypt(
-
-            {
-                name: "AES-GCM",
-
-                iv: iv
-            },
-
-            encryptionKey,
-
-            encoder.encode(
-                plainText
-            )
-
-        );
-
-
-    const record = {
-
-        version: 3,
-
-        salt:
-            bytesToBase64(
-                currentSalt
-            ),
-
-        iv:
-            bytesToBase64(
-                iv
-            ),
-
-        data:
-            bytesToBase64(
-                new Uint8Array(
-                    encrypted
-                )
-            )
-
-    };
-
-
-    localStorage.setItem(
-
-        STORAGE_KEY,
-
-        JSON.stringify(
-            record
-        )
-
-    );
-
-}
-
-
-/* =====================================================
-   ENTSCHLÜSSELN
-===================================================== */
-
-async function decryptData(
-    password
-) {
-
-    const raw =
-        localStorage.getItem(
-            STORAGE_KEY
-        );
-
-
-    if (!raw) {
-
-        return false;
-
-    }
-
-
-    try {
-
-        const record =
-            JSON.parse(raw);
-
-
-        /*
-           Salt aus dem gespeicherten
-           Datensatz lesen.
-        */
-
-        const salt =
-            base64ToBytes(
-                record.salt
-            );
-
-
-        /*
-           IV aus dem Datensatz lesen.
-        */
-
-        const iv =
-            base64ToBytes(
-                record.iv
-            );
-
-
-        /*
-           Verschlüsselte Daten lesen.
-        */
-
-        const encrypted =
-            base64ToBytes(
-                record.data
-            );
-
-
-        /*
-           Aus Passwort + Salt
-           denselben Schlüssel erzeugen.
-        */
-
-        const key =
-            await deriveKey(
-                password,
-                salt
-            );
-
-
-        /*
-           Entschlüsseln.
-        */
-
-        const decrypted =
-            await crypto.subtle.decrypt(
-
-                {
-                    name: "AES-GCM",
-
-                    iv: iv
-                },
-
-                key,
-
-                encrypted
-
-            );
-
-
-        const decoder =
-            new TextDecoder();
-
-
-        const json =
-            decoder.decode(
-                decrypted
-            );
-
-
-        const parsed =
-            JSON.parse(
-                json
-            );
-
-
-        /*
-           WICHTIG:
-           Erst jetzt Schlüssel übernehmen.
-        */
-
-        encryptionKey =
-            key;
-
-        currentSalt =
-            salt;
-
-        appData =
-            parsed;
-
-
-        return true;
-
-    }
-
-    catch (error) {
-
-        console.error(
-            "Entschlüsselung fehlgeschlagen:",
-            error
-        );
-
-        return false;
-
-    }
-
-}
-
-
-/* =====================================================
-   NEUE INSTALLATION
-===================================================== */
-
-async function createNewInstallation(
-    password
-) {
-
-    currentSalt =
-        crypto.getRandomValues(
-            new Uint8Array(16)
-        );
-
-
-    encryptionKey =
-        await deriveKey(
-            password,
-            currentSalt
-        );
-
-
-    appData = {
+    return {
 
         name: "",
 
@@ -1055,193 +459,146 @@ async function createNewInstallation(
 
     };
 
-
-    await encryptData();
-
 }
 
 
 /* =====================================================
-   LOGIN
+   DATEN LADEN
 ===================================================== */
 
-async function login() {
+function loadData() {
 
-    const password =
-        document.getElementById(
-            "password"
-        ).value;
-
-
-    const passwordRepeat =
-        document.getElementById(
-            "passwordRepeat"
-        ).value;
-
-
-    const error =
-        document.getElementById(
-            "loginError"
+    const raw =
+        localStorage.getItem(
+            STORAGE_KEY
         );
 
 
-    error.textContent = "";
+    if (!raw) {
 
+        appData =
+            createEmptyData();
 
-    if (!password) {
-
-        error.textContent =
-            "Bitte Passwort eingeben.";
-
-        return;
-
-    }
-
-
-    /*
-       NEUE INSTALLATION
-    */
-
-    if (isNewInstallation) {
-
-        if (
-            password.length < 8
-        ) {
-
-            error.textContent =
-                "Das Passwort muss mindestens 8 Zeichen haben.";
-
-            return;
-
-        }
-
-
-        if (
-            password !== passwordRepeat
-        ) {
-
-            error.textContent =
-                "Die Passwörter stimmen nicht überein.";
-
-            return;
-
-        }
-
-
-        try {
-
-            await createNewInstallation(
-                password
-            );
-
-
-            openApp();
-
-        }
-
-        catch (e) {
-
-            console.error(e);
-
-            error.textContent =
-                "Fehler beim Erstellen der verschlüsselten Daten.";
-
-        }
-
+        saveImmediately();
 
         return;
 
     }
 
 
-    /*
-       BESTEHENDE INSTALLATION
-    */
+    try {
 
-    const success =
-        await decryptData(
-            password
+        appData =
+            JSON.parse(raw);
+
+
+        /*
+           Sicherheitshalber fehlende
+           Eigenschaften ergänzen.
+        */
+
+        if (!appData.name) {
+
+            appData.name = "";
+
+        }
+
+
+        if (!appData.firstName) {
+
+            appData.firstName = "";
+
+        }
+
+
+        if (!appData.birthDate) {
+
+            appData.birthDate = "";
+
+        }
+
+
+        if (!Array.isArray(
+            appData.entries
+        )) {
+
+            appData.entries = [];
+
+        }
+
+    }
+
+    catch (error) {
+
+        console.error(
+            "Fehler beim Laden:",
+            error
         );
 
 
-    if (!success) {
+        appData =
+            createEmptyData();
 
-        error.textContent =
-            "Passwort ist falsch oder die gespeicherten Daten sind beschädigt.";
+        saveImmediately();
+
+    }
+
+}
+
+
+/* =====================================================
+   SOFORT SPEICHERN
+===================================================== */
+
+function saveImmediately() {
+
+    if (!appData) {
 
         return;
 
     }
 
 
-    openApp();
+    try {
+
+        localStorage.setItem(
+
+            STORAGE_KEY,
+
+            JSON.stringify(
+                appData
+            )
+
+        );
+
+
+        updateStatus(
+            "✓ Lokal gespeichert"
+        );
+
+    }
+
+    catch (error) {
+
+        console.error(
+            error
+        );
+
+
+        updateStatus(
+            "⚠️ Fehler beim Speichern"
+        );
+
+    }
 
 }
 
 
 /* =====================================================
-   APP ÖFFNEN
+   VERZÖGERT SPEICHERN
 ===================================================== */
-
-function openApp() {
-
-    document.getElementById(
-        "loginScreen"
-    ).style.display =
-        "none";
-
-
-    document.getElementById(
-        "app"
-    ).style.display =
-        "block";
-
-
-    document.getElementById(
-        "password"
-    ).value =
-        "";
-
-
-    document.getElementById(
-        "passwordRepeat"
-    ).value =
-        "";
-
-
-    render();
-
-
-    startLockTimer();
-
-    updateStatus(
-        "🔒 Daten sind verschlüsselt gespeichert."
-    );
-
-}
-
-
-/* =====================================================
-   SPEICHERN
-===================================================== */
-
-let saveTimer = null;
-
 
 function save() {
-
-    if (!encryptionKey) {
-
-        return;
-
-    }
-
-
-    /*
-       Nicht bei jedem einzelnen
-       Tastendruck sofort verschlüsseln.
-       Stattdessen 300 ms warten.
-    */
 
     clearTimeout(
         saveTimer
@@ -1250,29 +607,9 @@ function save() {
 
     saveTimer =
         setTimeout(
-            async function() {
+            function() {
 
-                try {
-
-                    await encryptData();
-
-                    updateStatus(
-                        "✓ Verschlüsselt gespeichert."
-                    );
-
-                }
-
-                catch (error) {
-
-                    console.error(
-                        error
-                    );
-
-                    updateStatus(
-                        "⚠️ Fehler beim Speichern."
-                    );
-
-                }
+                saveImmediately();
 
             },
             300
@@ -1289,10 +626,18 @@ function updateStatus(
     text
 ) {
 
-    document.getElementById(
-        "status"
-    ).textContent =
-        text;
+    const status =
+        document.getElementById(
+            "status"
+        );
+
+
+    if (status) {
+
+        status.textContent =
+            text;
+
+    }
 
 }
 
@@ -1307,14 +652,8 @@ document
         "input",
         function() {
 
-            if (!appData) {
-                return;
-            }
-
-
             appData.name =
                 this.value;
-
 
             save();
 
@@ -1328,14 +667,8 @@ document
         "input",
         function() {
 
-            if (!appData) {
-                return;
-            }
-
-
             appData.firstName =
                 this.value;
-
 
             save();
 
@@ -1349,14 +682,8 @@ document
         "change",
         function() {
 
-            if (!appData) {
-                return;
-            }
-
-
             appData.birthDate =
                 this.value;
-
 
             save();
 
@@ -1368,7 +695,7 @@ document
    NEUER EINTRAG
 ===================================================== */
 
-async function newEntry() {
+function newEntry() {
 
     if (!appData) {
 
@@ -1401,7 +728,7 @@ async function newEntry() {
     });
 
 
-    await encryptData();
+    saveImmediately();
 
 
     render();
@@ -1430,8 +757,11 @@ async function newEntry() {
 
 
                 last.scrollIntoView({
+
                     behavior: "smooth",
+
                     block: "center"
+
                 });
 
             }
@@ -1715,226 +1045,17 @@ function sendEmail() {
 
 
 /* =====================================================
-   APP SPERREN
-===================================================== */
-
-function lockApp() {
-
-    /*
-       Noch ausstehende Speicherung
-       abwarten.
-    */
-
-    clearTimeout(
-        saveTimer
-    );
-
-
-    if (
-        encryptionKey &&
-        appData
-    ) {
-
-        encryptData()
-            .then(
-                function() {
-
-                    actuallyLock();
-
-                }
-            )
-            .catch(
-                function(error) {
-
-                    console.error(
-                        error
-                    );
-
-                    actuallyLock();
-
-                }
-            );
-
-    }
-
-    else {
-
-        actuallyLock();
-
-    }
-
-}
-
-
-function actuallyLock() {
-
-    /*
-       Schlüssel aus dem RAM löschen.
-    */
-
-    encryptionKey =
-        null;
-
-
-    /*
-       Auch die Daten aus dem
-       sichtbaren Arbeitsspeicher entfernen.
-    */
-
-    appData =
-        null;
-
-
-    document.getElementById(
-        "app"
-    ).style.display =
-        "none";
-
-
-    document.getElementById(
-        "loginScreen"
-    ).style.display =
-        "flex";
-
-
-    document.getElementById(
-        "loginTitle"
-    ).textContent =
-        "🔐 App gesperrt";
-
-
-    document.getElementById(
-        "loginText"
-    ).textContent =
-        "Gib dein Passwort ein, " +
-        "um die verschlüsselten Daten zu öffnen.";
-
-
-    document.getElementById(
-        "passwordRepeatArea"
-    ).style.display =
-        "none";
-
-
-    document.getElementById(
-        "loginButton"
-    ).textContent =
-        "Entsperren";
-
-
-    document.getElementById(
-        "loginError"
-    ).textContent =
-        "";
-
-
-    document.getElementById(
-        "password"
-    ).value =
-        "";
-
-
-    stopLockTimer();
-
-
-    setTimeout(
-        function() {
-
-            document
-                .getElementById(
-                    "password"
-                )
-                .focus();
-
-        },
-        100
-    );
-
-}
-
-
-/* =====================================================
-   AUTOMATISCHE SPERRE
-===================================================== */
-
-function startLockTimer() {
-
-    stopLockTimer();
-
-
-    lockTimer =
-        setTimeout(
-            function() {
-
-                lockApp();
-
-            },
-            AUTO_LOCK_MS
-        );
-
-}
-
-
-function stopLockTimer() {
-
-    if (lockTimer) {
-
-        clearTimeout(
-            lockTimer
-        );
-
-        lockTimer =
-            null;
-
-    }
-
-}
-
-
-function resetLockTimer() {
-
-    if (!encryptionKey) {
-
-        return;
-
-    }
-
-
-    startLockTimer();
-
-}
-
-
-document.addEventListener(
-    "touchstart",
-    resetLockTimer
-);
-
-
-document.addEventListener(
-    "click",
-    resetLockTimer
-);
-
-
-document.addEventListener(
-    "input",
-    resetLockTimer
-);
-
-
-/* =====================================================
    ALLES LÖSCHEN
 ===================================================== */
 
-async function deleteEverything() {
+function deleteEverything() {
 
     const answer =
         confirm(
 
             "ACHTUNG!\n\n" +
 
-            "Alle verschlüsselten Daten " +
+            "Alle gespeicherten Daten " +
             "werden endgültig gelöscht.\n\n" +
 
             "Diese Aktion kann nicht " +
@@ -1962,16 +1083,7 @@ async function deleteEverything() {
     );
 
 
-    encryptionKey =
-        null;
-
-
-    currentSalt =
-        null;
-
-
-    appData =
-        null;
+    appData = null;
 
 
     location.reload();
@@ -1980,99 +1092,55 @@ async function deleteEverything() {
 
 
 /* =====================================================
-   START
+   SERVICE WORKER
 ===================================================== */
 
-function start() {
+if (
+    "serviceWorker" in navigator
+) {
 
-    const existing =
-        localStorage.getItem(
-            STORAGE_KEY
-        );
+    window.addEventListener(
+        "load",
+        function() {
 
+            navigator.serviceWorker
+                .register(
+                    "sw.js"
+                )
+                .then(
+                    function(registration) {
 
-    if (existing) {
+                        console.log(
+                            "Service Worker registriert:",
+                            registration.scope
+                        );
 
-        /*
-           Bestehende Installation
-        */
+                    }
+                )
+                .catch(
+                    function(error) {
 
-        isNewInstallation =
-            false;
+                        console.error(
+                            "Service Worker Fehler:",
+                            error
+                        );
 
+                    }
+                );
 
-        document.getElementById(
-            "loginTitle"
-        ).textContent =
-            "🔐 App entsperren";
-
-
-        document.getElementById(
-            "loginText"
-        ).textContent =
-            "Gib dein Passwort ein, " +
-            "um die verschlüsselten Daten zu öffnen.";
-
-
-        document.getElementById(
-            "passwordRepeatArea"
-        ).style.display =
-            "none";
-
-
-        document.getElementById(
-            "loginButton"
-        ).textContent =
-            "Entsperren";
-
-
-        document.getElementById(
-            "deleteLoginButton"
-        ).style.display =
-            "block";
-
-    }
-
-    else {
-
-        /*
-           Neue Installation
-        */
-
-        isNewInstallation =
-            true;
-
-
-        document.getElementById(
-            "loginTitle"
-        ).textContent =
-            "🔐 Passwort festlegen";
-
-
-        document.getElementById(
-            "loginText"
-        ).textContent =
-            "Erstelle ein Passwort für " +
-            "deine verschlüsselten Daten.";
-
-
-        document.getElementById(
-            "passwordRepeatArea"
-        ).style.display =
-            "block";
-
-
-        document.getElementById(
-            "loginButton"
-        ).textContent =
-            "Passwort festlegen";
-
-    }
+        }
+    );
 
 }
 
 
-start();
+/* =====================================================
+   START
+===================================================== */
+
+loadData();
+
+render();
 
 </script>
 
